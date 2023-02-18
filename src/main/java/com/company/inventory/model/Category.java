@@ -1,6 +1,5 @@
 package com.company.inventory.model;
 
-import java.io.Serializable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,17 +11,13 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="category")
-public class Category implements Serializable{
+public class Category {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	private String name;
 	private String description;
 	
