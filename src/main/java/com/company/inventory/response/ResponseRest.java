@@ -6,7 +6,7 @@ import java.util.HashMap;
 //clase que dara respuesta a cada accion del sistema
 public class ResponseRest {
 	
-	//array de tipo Hashmap que contemplara 2 string
+	//array de tipo Hashmap que contemplara 2 string la respuesta de metadata y un json de la  dta que estamos manipulando
 	private ArrayList<HashMap<String,String>> metadata = new ArrayList<>();
 
 	public ArrayList<HashMap<String, String>> getMetadata() {
