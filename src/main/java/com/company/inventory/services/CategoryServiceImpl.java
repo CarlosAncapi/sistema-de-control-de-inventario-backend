@@ -102,6 +102,7 @@ public class CategoryServiceImpl implements ICategoryService {
 			if (categorySaved != null) {
 				list.add(categorySaved);
 				response.getCategoryResponse().setCategory(list);
+				response.setMetadata("Respuesta ok", "00", "Categoria guardada");
 			} else {
 				response.setMetadata("Respuesta nok", "-1", "Categoria no guardada");
 				return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.BAD_REQUEST);
@@ -119,3 +120,9 @@ public class CategoryServiceImpl implements ICategoryService {
 		return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
 	}
 }
+
+
+
+
+
+
