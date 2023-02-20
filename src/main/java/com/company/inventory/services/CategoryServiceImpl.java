@@ -119,8 +119,57 @@ public class CategoryServiceImpl implements ICategoryService {
 		
 		return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
 	}
-}
 
+	@Override
+	@Transactional
+	public ResponseEntity<CategoryResponseRest> update(Category category, Long id) {
+		
+		CategoryResponseRest response = new CategoryResponseRest();
+		List<Category> list = new ArrayList<>();
+		
+		
+		try {
+			
+			//crear un objeto opcional a artir de la busqueda de un objeto Cateory en bs y copiar sus atributos
+			Optional<Category> categorySearch = categoryDao.findById(id);
+			
+			//si el nuevo objeto opcional existe entrara en este "if"
+			if(categorySearch.isPresent()) {
+				//se  procederá a actualizar el registro opcional con el nuevo nombre y descripcion que le doy
+				categorySearch.get().setName(category.getName());
+				categorySearch.get().setDescription(category.getDescription());	
+				
+				//se crea un nuevo objeto categoryToUpdate a partir de guardar el anterior objeto opcional CategorySeach
+				Category categoryToUpdate = categoryDao.save(categorySearch.get());
+				
+				//s la categoria es distinto de nulo, dara una respuesta ok, y una lista con el nuevo objeto guardado 
+				if (categoryToUpdate != null) {
+					list.add(categoryToUpdate);
+					response.getCategoryResponse().setCategory(list);
+					response.setMetadata("respuesta ok", "00", "Categoria actualizada");
+				} else {
+					// si la categoria almacenada es nula, dara un mensaje de error Nok, y una respuesta controlada 
+					response.setMetadata("Respuesta nok", "-1", "Categoria no actualizada");
+					return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.BAD_REQUEST);
+				}
+			
+				//de no encontrarse la categoria a traves de su id, dara una respuesta controlada de valor no encontrado 
+			} else {
+				response.setMetadata("Respuesta nok", "-1", "Categoria no encontrada");
+				return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.NOT_FOUND);
+			}
+			// si hay algun error en la transaccion de informacion, se mostrara un error controlado para que no se caiga el servicio
+		} catch (Exception e) {
+			
+			response.setMetadata("Respuesta nok", "-1", "Error al guardar categoria");
+			e.getStackTrace();
+			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		//si la transaccion de informacion ocurre con exito devolvera un mensaje ok status 200
+		return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+		}
+}
 
 
 
